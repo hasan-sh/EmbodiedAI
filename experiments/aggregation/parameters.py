@@ -56,7 +56,7 @@ Simulation settings to adjust:
 Aggregation class parameters (defines the environment of where the aggregation to act)
 """
 #Define the environment
-SYMMETRIC_SITES = True
+SYMMETRIC_SITES = False
 SITES_DIFFER = True
 
 

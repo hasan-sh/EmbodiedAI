@@ -13,7 +13,7 @@ class Aggregation(Swarm):
     def initialize(self, num_agents, swarm):
         object_loc = p.OBJECT_LOC
         scale = [800, 800]
-        filename = 'experiments/aggregation/images/greyc1.png'
+        filename = 'experiments/aggregation/images/convex.png'
 
         self.objects.add_object(file=filename,
                                 pos=object_loc,
@@ -44,23 +44,20 @@ class Aggregation(Swarm):
         else:
             self.objects.add_object(file=site_filename,
                                     pos=object_loc,
-                                    scale=[300, 300],
+                                    scale=[100, 100],
                                     type='site')
 
         min_x, max_x = helperfunctions.area(object_loc[0], scale[0])
         min_y, max_y = helperfunctions.area(object_loc[1], scale[1])
 
         print(self.objects.obstacles)
-        for o in self.objects.obstacles:
-            print('the o ', o)
         #add agents to the environment
         for agent in range(num_agents):
             coordinates = helperfunctions.generate_coordinates(self.screen)
-            while coordinates[0] <= max_x and coordinates[
-                    0] >= min_x and coordinates[
-                        1] <= max_y and coordinates[1] >= min_y:
-                coordinates = helperfunctions.generate_coordinates(
-                    self.screen)
+            while coordinates[0] >= max_x or coordinates[
+                    0] <= min_x or coordinates[1] >= max_y or coordinates[
+                        1] <= min_y:
+                coordinates = helperfunctions.generate_coordinates(self.screen)
 
             self.add_agent(
                 Cockroach(pos=np.array(coordinates), velocity=None,

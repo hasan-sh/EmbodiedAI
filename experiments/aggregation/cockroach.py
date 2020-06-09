@@ -23,12 +23,11 @@ class Cockroach(Agent):
         self.aggregation = aggregation
 
     def update_actions(self):
-        pass
-    #     for obstacle in self.aggregation.objects.obstacles:
-    #         collide = pygame.sprite.collide_mask(self, obstacle)
-    #         if bool(collide):
-    #             self.avoid_obstacle(obstacle.pos, self.flock.object_loc)
-    #     self.wander()
+        for obstacle in self.aggregation.objects.obstacles:
+            collide = pygame.sprite.collide_mask(self, obstacle)
+            if bool(collide):
+                self.avoid_obstacle(obstacle.pos, self.aggregation.object_loc)
+        # self.wander()
 
     #     #avoid any obstacles in the environment
     #     for obstacle in self.flock.objects.obstacles:
