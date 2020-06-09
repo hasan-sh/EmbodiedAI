@@ -1,6 +1,7 @@
 import pygame
 import sys
 from experiments.flocking.flock import Flock
+from experiments.aggregation.aggregation import Aggregation
 
 """
 General simulation pipeline, suitable for all experiments 
@@ -21,7 +22,7 @@ class Simulation():
         if swarm_type == 'Flock':
             self.swarm = Flock(screen_size)
         elif swarm_type == 'Aggregation':
-            self.swarm = Aggregations(screen_size)
+            self.swarm = Aggregation(screen_size)
             pass
         elif swarm_type == 'Covid':
             self.swarm = Population(screen_size)
