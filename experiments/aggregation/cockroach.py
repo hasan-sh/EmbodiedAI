@@ -26,7 +26,7 @@ class Cockroach(Agent):
         for obstacle in self.aggregation.objects.obstacles:
             collide = pygame.sprite.collide_mask(self, obstacle)
             if bool(collide):
-                self.avoid_obstacle(obstacle.pos, self.aggregation.object_loc)
+                self.avoid_obstacle(obstacle.pos, False)
         # self.wander()
 
     #     #avoid any obstacles in the environment
