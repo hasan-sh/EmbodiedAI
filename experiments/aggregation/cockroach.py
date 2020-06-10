@@ -1,3 +1,5 @@
+import random
+
 import pygame
 from experiments.aggregation import parameters as p
 from simulation import helperfunctions
@@ -21,6 +23,7 @@ class Cockroach(Agent):
                                         dT=p.dT)
 
         self.aggregation = aggregation
+        self._state = ['wandering']
 
     def update_actions(self):
         for obstacle in self.aggregation.objects.obstacles:
