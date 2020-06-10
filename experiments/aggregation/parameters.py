@@ -60,3 +60,9 @@ Boid class parameters
 """
 #view of site and other agents
 RADIUS_VIEW = 100
+
+# all cockroach's states
+WANDERING = 'wandering'
+STILL = 'still'
+LEAVING = 'leaving'
+JOINING = 'joining'
