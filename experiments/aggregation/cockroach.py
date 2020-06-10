@@ -27,11 +27,23 @@ class Cockroach(Agent):
             collide = pygame.sprite.collide_mask(self, obstacle)
             if bool(collide):
                 self.avoid_obstacle(obstacle.pos, False)
-        # self.wander()
+        # _state will act as a stack; LIFO
+        # this helps for controlling what the current and previous states are.
+        curr_state = self._state[0]
+        prev_state = None
+        # if len(self._state) > 0:
+        #     prev_state = self._state.pop()
 
-    #     #avoid any obstacles in the environment
-    #     for obstacle in self.flock.objects.obstacles:
-    #         collide = pygame.sprite.collide_mask(self, obstacle)
+        if curr_state == p.WANDERING:
+            # check for collision once the agent within the .x*site radius; x=0.7 now!
+            # this way we won't need timers and all that hassle
+            collide = pygame.sprite.spritecollide(
+                self, self.aggregation.objects.sites, False,
+                pygame.sprite.collide_circle_ratio(0.7))
+            # if collide, then set dt to 0; stop agent
+            if len(collide):# and prev_state != p.WANDERING:
+                print(random.random(), len(collide), prev_state)
+                self.dT = 0
     #         if bool(collide):
     #             self.avoid_obstacle(obstacle.pos, self.flock.object_loc)
 

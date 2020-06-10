@@ -11,6 +11,7 @@ class Aggregation(Swarm):
         self.object_loc = p.SYMMETRIC_SITES
 
     def initialize(self, num_agents, swarm):
+        self.n_agents = num_agents
         object_loc = p.OBJECT_LOC
         scale = [800, 800]
         filename = 'experiments/aggregation/images/convex.png'
