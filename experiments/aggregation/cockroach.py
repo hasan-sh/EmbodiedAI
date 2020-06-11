@@ -64,10 +64,14 @@ class Cockroach(Agent):
             in_center = pygame.sprite.spritecollide(
                 self, self.aggregation.objects.sites, False,
                 pygame.sprite.collide_circle_ratio(0.7))
-            # if collide, then set dt to 0; stop agent
-            if len(collide):# and prev_state != p.WANDERING:
-                print(random.random(), len(collide), prev_state)
-                self.dT = 0
+            if bool(in_center):
+                self.v = numpy.zeros(2)
+                self._state.append(p.STILL)
+            else:
+                self._state.append(state)
+        else:
+            print('leaving')
+            self._state.append(state)
     #         if bool(collide):
     #             self.avoid_obstacle(obstacle.pos, self.flock.object_loc)
 
