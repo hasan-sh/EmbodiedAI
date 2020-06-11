@@ -23,7 +23,7 @@ class Cockroach(Agent):
                                         dT=p.dT)
 
         self.aggregation = aggregation
-        self._state = ['wandering']
+        self._state = ['wandering', 'still', 'still','still']
 
     def update_actions(self):
         for obstacle in self.aggregation.objects.obstacles:
@@ -32,8 +32,7 @@ class Cockroach(Agent):
                 self.avoid_obstacle(obstacle.pos, False)
         # _state will act as a stack; LIFO
         # this helps for controlling what the current and previous states are.
-        curr_state = self._state[0]
-        prev_state = None
+        curr_state = self._state[-1]
         # if len(self._state) > 0:
         #     prev_state = self._state.pop()
 
@@ -45,16 +44,25 @@ class Cockroach(Agent):
                 pygame.sprite.collide_circle_ratio(0.7))
             # if collide, then set dt to 0; stop agent
             if len(collide):# and prev_state != p.WANDERING:
-                print(random.random(), len(collide), prev_state)
+                print(random.random(), len(collide))
                 self.dT = 0
-    #         if bool(collide):
-    #             self.avoid_obstacle(obstacle.pos, self.flock.object_loc)
+                self._state.append("still")
 
-    #     align_force, cohesion_force, separate_force = self.neighbor_forces()
 
-    #     #combine the vectors in one
-    #     steering_force = align_force * p.ALIGNMENT_WEIGHT  + cohesion_force * p.COHESION_WEIGHT + separate_force * p.SEPARATION_WEIGHT
+        if curr_state == p.STILL:
+            still_for_long_enough = True;
+            for x in range(2):
+                if not(self._state[x] == p.STILL):
+                    still_for_long_enough = False
 
-    #     #adjust the direction of the boid
-    #     self.steering += helperfunctions.truncate(steering_force / self.mass, p.MAX_FORCE)
-    #     self.steering *= random.randint(2, 4) if min(steering_force) < 0 else .8
+            if still_for_long_enough:
+                self._state.append("leaving")
+
+        if curr_state == p.LEAVING:
+            leaving_for_long_enough = True;
+            for x in range(2):
+                if not (self._state[x] == p.STILL):
+                    leaving_for_long_enough = False
+
+            if leaving_for_long_enough:
+                self._state.append("leaving")
