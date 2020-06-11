@@ -7,6 +7,7 @@ from simulation.agent import Agent
 
 
 class Cockroach(Agent):
+    _state = [p.WANDERING]
     def __init__(self,
                  pos,
                  velocity,
