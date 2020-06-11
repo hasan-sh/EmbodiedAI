@@ -1,4 +1,6 @@
 import pygame
+import random
+import numpy
 from experiments.aggregation import parameters as p
 from simulation import helperfunctions
 from simulation.agent import Agent
@@ -27,17 +29,38 @@ class Cockroach(Agent):
             collide = pygame.sprite.collide_mask(self, obstacle)
             if bool(collide):
                 self.avoid_obstacle(obstacle.pos, False)
-        # _state will act as a stack; LIFO
-        # this helps for controlling what the current and previous states are.
-        curr_state = self._state[0]
-        prev_state = None
-        # if len(self._state) > 0:
-        #     prev_state = self._state.pop()
 
-        if curr_state == p.WANDERING:
-            # check for collision once the agent within the .x*site radius; x=0.7 now!
-            # this way we won't need timers and all that hassle
-            collide = pygame.sprite.spritecollide(
+        for site in self.aggregation.objects.sites:
+            collide = pygame.sprite.collide_mask(self, site)
+            if bool(collide):
+                # maybe measure time
+                self.change_state(p.JOINING)
+                # print(random.random())
+                # self._state.append(p.JOINING)
+            else:
+                self.change_state(p.WANDERING)
+        self.site_behavior();
+
+    def site_behavior(self):
+        # join or leave with a certain prob.
+        # print(self._state)
+        pass
+
+    def change_state(self, state):
+        p_state = self._state.pop()
+        if state == p.WANDERING:
+            # if agent is joining, let it be
+            if p_state == p.JOINING:
+                self._state.append(p_state)
+                pass
+            else:
+                self._state.append(state)
+
+        elif state == p.STILL:
+            # calculate the prob. of staying/leaving and change the state
+            self._state.append(state)
+        elif state == p.JOINING:
+            in_center = pygame.sprite.spritecollide(
                 self, self.aggregation.objects.sites, False,
                 pygame.sprite.collide_circle_ratio(0.7))
             # if collide, then set dt to 0; stop agent
