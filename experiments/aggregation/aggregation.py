@@ -27,11 +27,12 @@ class Aggregation(Swarm):
             # make two sites
             site_1_loc = [object_loc[0] - 200, object_loc[1]]
             site_2_loc = [object_loc[0] + 200, object_loc[1]]
-            if p.SITES_DIFFER:
+                        if p.SITES_DIFFER:
                 scale1 = [100, 100]
-                scale2 = [100, 100]
+                scale2 = [170, 170]
+                site_2_loc = [object_loc[0] + 50, object_loc[1]]
             else:
-                scale1 = [90, 90]
+                scale1 = [100, 100]
                 scale2 = [100, 100]
 
             self.objects.add_object(file=site_filename,
@@ -45,8 +46,9 @@ class Aggregation(Swarm):
         else:
             self.objects.add_object(file=site_filename,
                                     pos=object_loc,
-                                    scale=[100, 100],
+                                    scale=[150, 150],
                                     type='site')
+
 
         min_x, max_x = helperfunctions.area(object_loc[0], scale[0])
         min_y, max_y = helperfunctions.area(object_loc[1], scale[1])
