@@ -6,6 +6,7 @@ from experiments.covid import parameters as p
 
 
 class Person(Agent):
+    _state = p.SUSCEPTIBLE  # initial state
 
     def __init__(self,
                  pos,
