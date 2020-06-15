@@ -4,21 +4,18 @@ from simulation import helperfunctions
 from experiments.covid.person import Person
 from experiments.covid import parameters as p
 
-class Population(Swarm):
 
-    def __init__(self):
-        pass
-        #To do
+class Population(Swarm):
+    def __init__(self, screen_size):
+        super(Population, self).__init__(screen_size)
+        # self.object_loc = p.OUTSIDE
 
     def initialize(self):
-
-        #To Do
-
-        #code snipet (not complete) to avoid initializing agents on obstacles
-        #given some coordinates and obstacles in the environment, this repositions the agent
+        # code snipet (not complete) to avoid initializing agents on obstacles
+        # given some coordinates and obstacles in the environment, this repositions the agent
         coordinates = helperfunctions.generate_coordinates(self.screen)
 
-        if p.OBSTACLES: #you need to define this variable
+        if p.OBSTACLES:  # you need to define this variable
             for object in self.objects.obstacles:
                 rel_coordinate = helperfunctions.relative(coordinates, (object.rect[0], object.rect[1]))
                 try:
