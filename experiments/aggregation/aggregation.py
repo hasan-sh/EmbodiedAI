@@ -5,7 +5,6 @@ from experiments.aggregation.cockroach import Cockroach
 from experiments.aggregation import parameters as p
 
 
-
 class Aggregation(Swarm):
     def __init__(self, screen_size):
         super(Aggregation, self).__init__(screen_size)
@@ -54,12 +53,12 @@ class Aggregation(Swarm):
         print(self.objects.obstacles)
         for o in self.objects.obstacles:
             print('the o ', o)
-        #add agents to the environment
+        # add agents to the environment
         for agent in range(num_agents):
             coordinates = helperfunctions.generate_coordinates(self.screen)
             while coordinates[0] <= max_x and coordinates[
-                    0] >= min_x and coordinates[
-                        1] <= max_y and coordinates[1] >= min_y:
+                0] >= min_x and coordinates[
+                1] <= max_y and coordinates[1] >= min_y:
                 coordinates = helperfunctions.generate_coordinates(
                     self.screen)
 
@@ -80,13 +79,13 @@ class Aggregation(Swarm):
         return neighbor_sum_pos / len(neighbors)
 
     def find_neighbor_separation(self, boid,
-                                 neighbors):  #show what works better
+                                 neighbors):  # show what works better
         separate = np.zeros(2)
         for idx in neighbors:
             neighbor_pos = list(self.agents)[idx].pos
-            difference = boid.pos - neighbor_pos  #compute the distance vector (v_x, v_y)
+            difference = boid.pos - neighbor_pos  # compute the distance vector (v_x, v_y)
             difference /= helperfunctions.norm(
                 difference
-            )  #normalize to unit vector with respect to its maginiture
-            separate += difference  #add the influences of all neighbors up
+            )  # normalize to unit vector with respect to its maginiture
+            separate += difference  # add the influences of all neighbors up
         return separate / len(neighbors)

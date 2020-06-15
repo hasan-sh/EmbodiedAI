@@ -10,7 +10,7 @@ class Population(Swarm):
         super(Population, self).__init__(screen_size)
         # self.object_loc = p.OUTSIDE
 
-    def initialize(self):
+    def initialize(self, num_agents, swarm):
         # code snipet (not complete) to avoid initializing agents on obstacles
         # given some coordinates and obstacles in the environment, this repositions the agent
         coordinates = helperfunctions.generate_coordinates(self.screen)

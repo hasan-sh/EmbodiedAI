@@ -11,7 +11,7 @@ SCREEN = (S_WIDTH, S_HEIGHT)
 FRAMES = -1
 
 # choose swarm type
-SWARM = 'population'
+SWARM = 'Covid'
 # define the number of agents
 N_AGENTS = 80
 # object location
