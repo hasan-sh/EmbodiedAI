@@ -48,3 +48,7 @@ N_OBSTACLES = 0
 SUSCEPTIBLE = 'susceptible'
 INFECTIOUS = 'infectious'
 RECOVERED = 'recovered'
+
+ORANGE = (255, 153, 18)
+RED = (238, 59, 59)
+GREEN = (0, 201, 87)

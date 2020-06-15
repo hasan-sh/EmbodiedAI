@@ -14,7 +14,7 @@ class Person(Agent):
                  population):
         super(Person, self).__init__(pos,
                                      velocity,
-                                     color=(255, 153, 18),  # orange
+                                     color=p.ORANGE,  # susceptible
                                      max_speed=p.MAX_SPEED,
                                      min_speed=p.MIN_SPEED,
                                      mass=p.MASS,
