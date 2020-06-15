@@ -5,6 +5,7 @@ from experiments.aggregation.cockroach import Cockroach
 from experiments.aggregation import parameters as p
 
 
+
 class Aggregation(Swarm):
     def __init__(self, screen_size):
         super(Aggregation, self).__init__(screen_size)
