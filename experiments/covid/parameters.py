@@ -13,7 +13,7 @@ FRAMES = -1
 # choose swarm type
 SWARM = 'Covid'
 # define the number of agents
-N_AGENTS = 80
+N_AGENTS = 40
 
 CONVEX = True
 
@@ -26,8 +26,8 @@ dT = 0.2
 # agents mass
 MASS = 20
 # agent maximum/minimum speed
-MAX_SPEED = 7.
-MIN_SPEED = 4.
+MAX_SPEED = 4.
+MIN_SPEED = 1.
 
 # Person Settings:
 # velocity force
@@ -45,10 +45,15 @@ OBSTACLES = 0
 OUTSIDE = False
 N_OBSTACLES = 0
 
+# the overall transmission is person's the average number of contacts of an agent; i = i*k
+i = 0.3
+r = 0.7
+
+
 SUSCEPTIBLE = 'susceptible'
 INFECTIOUS = 'infectious'
 RECOVERED = 'recovered'
 
 ORANGE = (255, 153, 18)
-RED = (238, 59, 59)
-GREEN = (0, 201, 87)
+RED = (248, 59, 59)
+GREEN = (0, 2, 187)

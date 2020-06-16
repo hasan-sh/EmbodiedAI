@@ -30,6 +30,8 @@ class Person(Agent):
         self.infected_at = None
         self.clock = pygame.time.Clock()
         self.count = 0
+        self.beta = p.i
+        self.gama = p.r
 
     def update_actions(self):
         # print(self._state)
@@ -45,13 +47,28 @@ class Person(Agent):
             if self.dT == p.dT:
                 self.dT *= 0.2
             return
+
         self.p_infection = self.calc_prob_infection()  # find prob of infection
         # TODO: change 0.4 to a parameter; this should be based on a differential equation
-        if self._state == p.SUSCEPTIBLE and self.p_infection >= 0.4:
+        if self._state == p.SUSCEPTIBLE:# and self.p_infection >= 0.4:
             # TODO: change the radius to a parameter
             all_neighbors = self.population.find_neighbors(self, radius=25)
-            neighbors_in_radius = len(all_neighbors) >= 1
-            if neighbors_in_radius:
+            not_recovered = []
+            average_i = 0
+            for agent in all_neighbors:
+                if agent._state is not p.RECOVERED:
+                    not_recovered.append(agent)
+                    # maybe the first part should be beta * Si;
+                    # where Si is the (averaged) n susceptible agents
+                    agent.p_infection += self.beta * agent.p_infection - self.gama * agent.p_infection
+            #         average_i += agent.p_infection
+
+            # average_i = average_i / len(not_recovered) if average_i != 0 else 1.
+            # # self.p_infection += n.e ** self.beta * average_i
+            # self.p_infection += self.beta
+            neighbors_in_radius = len(not_recovered) >= 1
+            if neighbors_in_radius and self.p_infection >= 0.8:
+                print('inf', self.p_infection)
                 self._state = p.INFECTIOUS
                 self._color = p.RED
                 if not self.infected_at:
@@ -78,6 +95,7 @@ class Person(Agent):
     def calc_prob_infection(self):
         # TODO: the rate could/should be based on a parameter; easier for farther calculations!
         return round(random.uniform(0.3, 0.8), 1)
+        return p.i
 
     def calc_infected_time(self):
         t = self.clock.tick()
