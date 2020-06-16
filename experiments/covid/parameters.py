@@ -14,8 +14,7 @@ FRAMES = -1
 SWARM = 'Covid'
 # define the number of agents
 N_AGENTS = 80
-# object location
-OBJECT_LOC = [S_WIDTH / 2., S_HEIGHT / 2.]
+
 CONVEX = True
 
 # Agent Settings:
@@ -42,7 +41,8 @@ Simulation settings to adjust:
 Population class parameters (defines the environment of where the flock to act)
 """
 # Define the environment
-OBSTACLES = False
+OBSTACLES = 0
+OUTSIDE = False
 N_OBSTACLES = 0
 
 SUSCEPTIBLE = 'susceptible'
