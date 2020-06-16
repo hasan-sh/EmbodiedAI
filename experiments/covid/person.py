@@ -8,13 +8,14 @@ from experiments.covid import parameters as p
 
 
 class Person(Agent):
-    _state = np.random.choice((p.SUSCEPTIBLE, p.INFECTIOUS), p=[0.8, 0.2])  # initial state: weighted random choice
+    _state = p.SUSCEPTIBLE
     _color = p.ORANGE if _state == p.SUSCEPTIBLE else p.RED  # I do not know why this is not working???? Halp???
 
     def __init__(self,
                  pos,
                  velocity,
-                 population
+                 population,
+                 infected
                  ):
         super(Person, self).__init__(pos,
                                      velocity,
@@ -30,6 +31,8 @@ class Person(Agent):
         self.infected_at = None
         self.clock = pygame.time.Clock()
         self.count = 0
+        self._state = p.INFECTIOUS if infected else p.SUSCEPTIBLE
+
 
     def update_actions(self):
         # print(self._state)
@@ -48,8 +51,7 @@ class Person(Agent):
         self.p_infection = self.calc_prob_infection()  # find prob of infection
         # TODO: change 0.4 to a parameter; this should be based on a differential equation
         if self._state == p.SUSCEPTIBLE and self.p_infection >= 0.4:
-            # TODO: change the radius to a parameter
-            all_neighbors = self.population.find_neighbors(self, radius=25)
+            all_neighbors = self.population.find_neighbors(self, radius=p.INFECTIOUS_RADIUS)
             neighbors_in_radius = len(all_neighbors) >= 1
             if neighbors_in_radius:
                 self._state = p.INFECTIOUS

@@ -45,6 +45,7 @@ OBSTACLES = 0
 OUTSIDE = False
 N_OBSTACLES = 0
 
+
 SUSCEPTIBLE = 'susceptible'
 INFECTIOUS = 'infectious'
 RECOVERED = 'recovered'
@@ -52,3 +53,11 @@ RECOVERED = 'recovered'
 ORANGE = (255, 153, 18)
 RED = (238, 59, 59)
 GREEN = (0, 201, 87)
+
+INFECTIOUS_RADIUS = 1
+
+#object
+FULL_LOCKDOWN = False
+PLACE_OBJECT = True
+OBJECT_LOC = [S_WIDTH/2., S_HEIGHT/3.]
+

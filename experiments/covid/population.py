@@ -11,6 +11,16 @@ class Population(Swarm):
 
     def initialize(self, num_agents, swarm):
 
+        if p.PLACE_OBJECT:
+            object_loc = p.OBJECT_LOC
+            scale = [500, 500]
+            filename = 'experiments/covid/images/border.png' if p.FULL_LOCKDOWN else 'experiments/covid/images/border_open.png'
+
+            self.objects.add_object(file=filename,
+                                    pos=object_loc,
+                                    scale=scale,
+                                    type='obstacle')
+
         # code snipet (not complete) to avoid initializing agents on obstacles
         # given some coordinates and obstacles in the environment, this repositions the agent
 
@@ -38,4 +48,4 @@ class Population(Swarm):
                         coordinates[1] <= min_y:
                     coordinates = helperfunctions.generate_coordinates(self.screen)
 
-            self.add_agent(Person(pos=np.array(coordinates), velocity=None, population=swarm))
+            self.add_agent(Person(pos=np.array(coordinates), velocity=None, population=swarm, infected=True if agent == 0 else False))
