@@ -9,7 +9,7 @@ from experiments.covid import parameters as p
 
 class Person(Agent):
     _state = np.random.choice((p.SUSCEPTIBLE, p.INFECTIOUS), p=[0.8, 0.2])  # initial state: weighted random choice
-    _color = None
+    _color = p.ORANGE if _state == p.SUSCEPTIBLE else p.RED  # I do not know why this is not working???? Halp???
 
     def __init__(self,
                  pos,
@@ -18,14 +18,13 @@ class Person(Agent):
                  ):
         super(Person, self).__init__(pos,
                                      velocity,
-                                     color=p.ORANGE if self._state == p.SUSCEPTIBLE else p.RED,
+                                     color=self._color,
                                      max_speed=p.MAX_SPEED,
                                      min_speed=p.MIN_SPEED,
                                      mass=p.MASS,
                                      width=p.WIDTH,
                                      height=p.HEIGHT,
                                      dT=p.dT)
-        self.color = self._color
         self.population = population
 
     def update_actions(self):
