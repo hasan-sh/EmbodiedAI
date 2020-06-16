@@ -35,9 +35,9 @@ class Swarm(pygame.sprite.Sprite):
 
             if type != None:
                 if type == 'I' and helperfunctions.dist(agent.pos, neighbor.pos) < radius:
-                    neighbors.append(j)
+                    neighbors.append(neighbor)
             elif helperfunctions.dist(agent.pos, neighbor.pos) < radius:
-                neighbors.append(j)
+                neighbors.append(neighbor)
 
         return neighbors
 
