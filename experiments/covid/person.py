@@ -8,13 +8,14 @@ from experiments.covid import parameters as p
 
 
 class Person(Agent):
-    _state = np.random.choice((p.SUSCEPTIBLE, p.INFECTIOUS), p=[0.8, 0.2])  # initial state: weighted random choice
+    _state = p.SUSCEPTIBLE
     _color = p.ORANGE if _state == p.SUSCEPTIBLE else p.RED  # I do not know why this is not working???? Halp???
 
     def __init__(self,
                  pos,
                  velocity,
-                 population
+                 population,
+                 infected
                  ):
         super(Person, self).__init__(pos,
                                      velocity,
@@ -32,6 +33,7 @@ class Person(Agent):
         self.count = 0
         self.beta = p.i
         self.gama = p.r
+        self._state = p.INFECTIOUS if infected else p.SUSCEPTIBLE
 
     def update_actions(self):
         # print(self._state)

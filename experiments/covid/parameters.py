@@ -57,3 +57,13 @@ RECOVERED = 'recovered'
 ORANGE = (255, 153, 18)
 RED = (248, 59, 59)
 GREEN = (0, 2, 187)
+RED = (238, 59, 59)
+GREEN = (0, 201, 87)
+
+INFECTIOUS_RADIUS = 1
+
+#object
+FULL_LOCKDOWN = False
+PLACE_OBJECT = True
+OBJECT_LOC = [S_WIDTH/2., S_HEIGHT/3.]
+
