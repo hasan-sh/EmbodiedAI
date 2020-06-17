@@ -46,8 +46,10 @@ OUTSIDE = False
 N_OBSTACLES = 0
 
 # the overall transmission is person's the average number of contacts of an agent; i = i*k
-i = 0.3
-r = 0.7
+# i = prob. of infecting others
+# r = prob. recovering oneself
+i = 0.8
+r = 0.2
 
 
 SUSCEPTIBLE = 'susceptible'
