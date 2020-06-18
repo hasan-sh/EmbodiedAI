@@ -40,10 +40,6 @@ Simulation settings to adjust:
 """
 Population class parameters (defines the environment of where the flock to act)
 """
-# Define the environment
-OBSTACLES = 0
-OUTSIDE = False
-N_OBSTACLES = 0
 
 # the overall transmission is person's the average number of contacts of an agent; i = i*k
 # i = prob. of infecting others
@@ -65,7 +61,7 @@ GREEN = (0, 201, 87)
 INFECTIOUS_RADIUS = 1
 
 #object
-FULL_LOCKDOWN = False
+FULL_LOCKDOWN = True
 PLACE_OBJECT = True
 OBJECT_LOC = [S_WIDTH/2., S_HEIGHT/3.]
 
