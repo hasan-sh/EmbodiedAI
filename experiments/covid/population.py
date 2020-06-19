@@ -1,4 +1,5 @@
 import numpy as np
+import random
 from simulation.swarm import Swarm
 from simulation import helperfunctions
 from experiments.covid.person import Person
@@ -41,4 +42,4 @@ class Population(Swarm):
                     except IndexError:
                         pass  # not sure what to do here
 
-            self.add_agent(Person(pos=np.array(coordinates), velocity=None, population=swarm, infected=True if agent == 0 else False))
+            self.add_agent(Person(pos=np.array(coordinates), velocity=None, population=swarm, infected=True if agent <= random.randint(1, 5) else False))
