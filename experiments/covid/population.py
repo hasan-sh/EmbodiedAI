@@ -1,4 +1,5 @@
 import numpy as np
+
 from simulation.swarm import Swarm
 from simulation import helperfunctions
 from experiments.covid.person import Person
@@ -48,4 +49,27 @@ class Population(Swarm):
                         coordinates[1] <= min_y:
                     coordinates = helperfunctions.generate_coordinates(self.screen)
 
-            self.add_agent(Person(pos=np.array(coordinates), velocity=None, population=swarm, infected=True if agent == 0 else False))
+            self.add_agent(Person(pos=np.array(coordinates), velocity=None, population=swarm,
+                                  infected=True if agent == 0 else False))
+
+    def find_neighbor_separation(self, person, neighbors):  # show what works better
+        separate = np.zeros(2)
+        for idx in neighbors:
+            neighbor_pos = list(self.agents)[idx].pos
+            difference = person.pos - neighbor_pos  # compute the distance vector (v_x, v_y)
+            difference /= helperfunctions.norm(difference)  # normalize to unit vector with respect to its maginiture
+            separate += difference  # add the influences of all neighbors up
+
+        return separate / len(neighbors)
+
+    def find_neighbor_velocity(self, neighbors):
+        neighbor_sum_v = np.zeros(2)
+        for idx in neighbors:
+            neighbor_sum_v += list(self.agents)[idx].v
+        return neighbor_sum_v / len(neighbors)
+
+    def find_neighbor_center(self, neighbors):
+        neighbor_sum_pos = np.zeros(2)
+        for idx in neighbors:
+            neighbor_sum_pos += list(self.agents)[idx].pos
+        return neighbor_sum_pos / len(neighbors)

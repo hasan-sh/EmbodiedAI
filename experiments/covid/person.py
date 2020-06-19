@@ -76,16 +76,52 @@ class Person(Agent):
                 self.infected_at = None
         self.update_color()
 
+        if p.SOCIAL_DISTANCING:  # adapts direction of the agents to
+            align_force, cohesion_force, separate_force = self.neighbor_forces()
+            # combine the vectors in one
+            steering_force = align_force * p.ALIGNMENT_WEIGHT + cohesion_force * p.COHESION_WEIGHT + separate_force * p.SEPARATION_WEIGHT
+            # adjust the direction
+            self.steering += helperfunctions.truncate(steering_force / self.mass, p.MAX_FORCE)
+
     def update_color(self):
         self.image.fill(self.color)
 
-
     def calc_prob_infection(self):
         # TODO: the rate could/should be based on a parameter; easier for farther calculations!
-        return round(random.uniform(0.3, 0.8), 1)
+        # return round(random.uniform(0.3, 0.8), 1)
         return p.i
 
     def calc_infected_time(self):
         t = self.clock.tick()
         # print(t)
         return t / 1000
+
+    def neighbor_forces(self):
+
+        align_force, cohesion_force, separate_force = np.zeros(2), np.zeros(2), np.zeros(2)
+
+        # find all the neighbors based on its radius view
+        neighbors = self.population.find_neighbors(self, p.RADIUS_VIEW)
+
+        # if there are neighbors, estimate the influence of their forces
+        if neighbors:
+            align_force = self.align(self.population.find_neighbor_velocity(neighbors))
+            cohesion_force = self.cohesion(self.population.find_neighbor_center(neighbors))
+            separate_force = self.population.find_neighbor_separation(self, neighbors)
+
+        return align_force, cohesion_force, separate_force
+
+    def align(self, neighbor_force):
+        """
+        Function to align the agent in accordance to neighbor velocity
+        :param neighbor_force: np.array(x,y)
+        """
+        return helperfunctions.normalize(neighbor_force - self.v)
+
+    def cohesion(self, neighbor_center):
+        """
+        Function to move the agent towards the center of mass of its neighbors
+        :param neighbor_rotation: np.array(x,y)
+        """
+        force = neighbor_center - self.pos
+        return helperfunctions.normalize(force - self.v)
