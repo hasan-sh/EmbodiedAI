@@ -13,7 +13,7 @@ FRAMES = -1
 # choose swarm type
 SWARM = 'Covid'
 # define the number of agents
-N_AGENTS = 40
+N_AGENTS = 80
 
 CONVEX = True
 
@@ -61,6 +61,10 @@ RED = (248, 59, 59)
 GREEN = (0, 2, 187)
 RED = (238, 59, 59)
 GREEN = (0, 201, 87)
+
+# ORANGE = (1, 0.5, 0)
+# RED = (1, 0, 0)
+# GREEN = (0, 1, 0)
 
 INFECTIOUS_RADIUS = 1
 

@@ -40,7 +40,7 @@ class Simulation():
         self.to_display = pygame.sprite.Group()
         self.running = True
 
-    def CovidPlot(self, data):
+    def CovidPlot(self, data):  #data = points_to_plot
         output_name = "experiments/covid/plots/Covid-19-SIR%s.png" % time.strftime("-%m.%d.%y-%H:%M", time.localtime())
         fig = plt.figure()
         plt.plot(data['S'], label="Susceptible", color=(1, 0.5, 0))  # Orange

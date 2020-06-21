@@ -3,7 +3,7 @@ import pygame
 import time
 import numpy as np
 from simulation.agent import Agent
-from simulation import helperfunctions
+from simulation import helperfunctions, swarm
 from experiments.covid import parameters as p
 
 
@@ -33,6 +33,8 @@ class Person(Agent):
         self.state = p.INFECTIOUS if infected else p.SUSCEPTIBLE
         self.color = p.ORANGE if self.state == p.SUSCEPTIBLE else p.RED
 
+
+
     def update_actions(self):
         # print(self.state)
         # avoid any obstacles in the environment
@@ -43,9 +45,11 @@ class Person(Agent):
 
         if self.state == p.RECOVERED:
             # since agent recovered, no need for further calculation
+            self.population.datapoints.append('R')
             return
 
         if self.state == p.SUSCEPTIBLE:
+            self.population.datapoints.append('S')
             # TODO: change the radius to a parameter
             all_neighbors = self.population.find_neighbors(self, radius=25)
             all_susceptible = []
@@ -65,7 +69,9 @@ class Person(Agent):
                 self.color = p.RED
                 if not self.infected_at:
                     self.infected_at = self.clock.tick()
+
         if self.state == p.INFECTIOUS:
+            self.population.datapoints.append('I')
             self.count += 1
             # TODO: (maybe) change the time for an agent to recover based on the recovery rate;
             # recovery and infection rates should sum up to 1; i.e. probability
@@ -89,3 +95,4 @@ class Person(Agent):
         t = self.clock.tick()
         # print(t)
         return t / 1000
+

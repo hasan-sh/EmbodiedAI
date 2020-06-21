@@ -15,8 +15,8 @@ class Swarm(pygame.sprite.Sprite):
         self.agents = pygame.sprite.Group()
         self.screen = screen_size
         self.objects = Objects()
-        self.points_to_plot = plot
-        self.datapoints = []
+        self.points_to_plot = {'S': [], 'I': [], 'R': []}
+        self.datapoints = []    #['S','S','S']
 
     def add_agent(self, agent):
         self.agents.add(agent)
@@ -53,14 +53,14 @@ class Swarm(pygame.sprite.Sprite):
                 agent.pos[1] = 0.
 
     # plotting the number of infected and recovered
-    def add_point(self, lst):
+    def add_point(self, lst):   # lst = datapoints ['S', 'S', 'S','S', 'S']
         # Count current numbers
         values = {'S': 0, 'I': 0, 'R': 0}
         for state in lst:
             values[state] += 1
-
         for x in values:
             self.points_to_plot[x].append(values[x])
+
 
     def update(self):
         # update the movement
