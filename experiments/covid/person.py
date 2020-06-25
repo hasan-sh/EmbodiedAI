@@ -55,12 +55,11 @@ class Person(Agent):
                     if infected_chance >= .5:
                         susceptible.state = p.INFECTIOUS
                         susceptible.color = p.RED
-            if self.count >= 1500:
+            if self.count >= 100:
                 self.state = p.RECOVERED
                 self.color = p.GREEN
         elif self.state == p.RECOVERED:
             self.population.datapoints.append('R')
-            return
         self.update_color()
 
 
