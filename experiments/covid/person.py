@@ -41,40 +41,23 @@ class Person(Agent):
             if bool(collide):
                 self.avoid_obstacle()
 
-        if self.state == p.RECOVERED:
-            # since agent recovered, no need for further calculation
-            return
-
-        if self.state == p.SUSCEPTIBLE:
-            # TODO: change the radius to a parameter
-            all_neighbors = self.population.find_neighbors(self, radius=25)
-            all_susceptible = []
-            for agent in all_neighbors:
-                if agent.state is not p.RECOVERED:
-                    all_susceptible.append(agent)
-                    # the first part is be beta * Si;
-                    # where Si is the infection prob. of the susceptible agents
-                    # then that minus the prob. of recovery
-                    agent.p_infection += self.beta * agent.p_infection - self.gama * agent.p_infection
-                # another approach is to take the average of susceptible ones.
-
-            neighbors_in_radius = len(all_susceptible) >= 1
-            # TODO: .8 can be 1.0 or 0.9; for a higher prob. of being infected.
-            if neighbors_in_radius and self.p_infection >= 0.8:
-                self.state = p.INFECTIOUS
-                self.color = p.RED
-                if not self.infected_at:
-                    self.infected_at = self.clock.tick()
         if self.state == p.INFECTIOUS:
             self.count += 1
-            # TODO: (maybe) change the time for an agent to recover based on the recovery rate;
-            # recovery and infection rates should sum up to 1; i.e. probability
-            # the time can then be calculated as 1 / r
-            if self.count >= 500:
+            all_neighbors = self.population.find_actual_neighbors(self, radius=50)
+            all_susceptible = []
+            for agent in all_neighbors:
+                if agent.state is p.SUSCEPTIBLE:
+                    all_susceptible.append(agent)
+            if len(all_susceptible) > 0:
+                for susceptible in all_susceptible:
+                    print('affect')
+                    susceptible.state = p.INFECTIOUS
+                    susceptible.color = p.RED
+            if self.count >= 1500:
                 self.state = p.RECOVERED
                 self.color = p.GREEN
-                self.infected_at = None
         self.update_color()
+
 
         if p.SOCIAL_DISTANCING:  # adapts direction of the agents to
             align_force, cohesion_force, separate_force = self.neighbor_forces()
