@@ -5,17 +5,22 @@ from experiments.covid.person import Person
 from experiments.covid import parameters as p
 import random
 
-
 object_locs_full_lockdown = \
     [[p.S_WIDTH / 4., p.S_HEIGHT / 4],
     [p.S_WIDTH - (p.S_WIDTH / 4.), p.S_HEIGHT / 4],
     [p.S_WIDTH - (p.S_WIDTH / 4.), p.S_HEIGHT - (p.S_HEIGHT / 4)],
-    [p.S_WIDTH / 4., p.S_HEIGHT - (p.S_HEIGHT / 4)]]
-object_scale_full_lockdown = [400, 400]
+    [p.S_WIDTH / 4., p.S_HEIGHT - (p.S_HEIGHT / 4)],
+    ]
+object_scale_full_lockdown = [300, 300]
+object_scale_full_lockdown_center = [200, 200]
 
 class Population(Swarm):
     def __init__(self, screen_size):
         super(Population, self).__init__(screen_size)
+        if p.FULL_LOCKDOWN:
+            self.inside = [{'obstacle': (object_locs_full_lockdown[i], object_scale_full_lockdown), 'agents': 0} for i in range(0, len(object_locs_full_lockdown))]
+            # center currently can only be one obstacle.
+            self.in_center = {'obstacle': ([p.S_WIDTH / 2., p.S_HEIGHT / 2], [200, 200]), 'agents': 0}
 
     def initialize(self, num_agents, swarm):
         if p.PLACE_OBJECT:
@@ -25,6 +30,10 @@ class Population(Swarm):
                                         pos=object_loc,
                                         scale=object_scale_full_lockdown,
                                         type='obstacle')
+                self.objects.add_object(file='experiments/covid/images/community_border.png',
+                                    pos=self.in_center.get('obstacle')[0],
+                                    scale=self.in_center.get('obstacle')[1],
+                                    type='obstacle')
             else:
                 object_loc = [p.S_WIDTH / 2., p.S_HEIGHT / 2.5]
                 scale = [900, 900]
@@ -72,14 +81,24 @@ class Population(Swarm):
         return separate / len(neighbors)
 
     def coor_inside_object(self):
-        inside_object = random.randint(0, len(object_locs_full_lockdown)-1)
-        x_pos = float(random.randrange(object_locs_full_lockdown[inside_object][0] - int(object_scale_full_lockdown[0]/3),
-                                       object_locs_full_lockdown[inside_object][0] + int(object_scale_full_lockdown[0]/3)
-                                       ))
-        y_pos = float(random.randrange(object_locs_full_lockdown[inside_object][1] - int(object_scale_full_lockdown[1]/3),
-                                       object_locs_full_lockdown[inside_object][1] + int(object_scale_full_lockdown[1]/3)
-                                       ))
-        return [x_pos, y_pos]
+        n_in_each = int(p.N_AGENTS / len(object_locs_full_lockdown))
+        def func(e):
+            return e.get('agents') < n_in_each
+        elements = list(filter(func, self.inside))
+        # to randomize agents across all obstacles.
+        random.shuffle(elements)
+        el = elements[0]
+
+        o_loc, o_scale = el.get('obstacle')
+        x_pos = float(random.randrange(o_loc[0] - int(o_scale[0]/3),
+                                    o_loc[0] + int(o_scale[0]/3)
+                                    ))
+        y_pos = float(random.randrange(o_loc[1] - int(o_scale[1]/3),
+                                    o_loc[1] + int(o_scale[1]/3)
+                                    ))
+        # max n of agents inside an obstacle
+        el['agents'] += 1
+        return x_pos, y_pos
 
     def find_neighbor_velocity(self, neighbors):
         neighbor_sum_v = np.zeros(2)
