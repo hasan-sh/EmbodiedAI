@@ -50,7 +50,7 @@ class Population(Swarm):
                     coordinates = helperfunctions.generate_coordinates(self.screen)
 
             self.add_agent(Person(pos=np.array(coordinates), velocity=None, population=swarm,
-                                  infected=True if agent == 0 else False))
+                                  infected=True if agent <= 3 else False))
 
     def find_neighbor_separation(self, person, neighbors):  # show what works better
         separate = np.zeros(2)

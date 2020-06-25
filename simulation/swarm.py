@@ -35,11 +35,33 @@ class Swarm(pygame.sprite.Sprite):
 
             # TODO: why is this piece of code interfering with the social distancing???
 
-            # if type != None:
-            #     if type == 'I' and helperfunctions.dist(agent.pos, neighbor.pos) < radius:
-            #         neighbors.append(neighbor)
-            # elif helperfunctions.dist(agent.pos, neighbor.pos) < radius:
-            #     neighbors.append(neighbor)
+            if type != None:
+                if type == 'I' and helperfunctions.dist(agent.pos, neighbor.pos) < radius:
+                    neighbors.append(j)
+            elif helperfunctions.dist(agent.pos, neighbor.pos) < radius:
+                neighbors.append(j)
+
+        return neighbors
+
+    def find_actual_neighbors(self, agent, radius):
+        agents = list(self.agents).copy()
+        neighbors = []
+        for j, neighbor in enumerate(agents):
+            if agent == neighbor:
+                continue
+            else:
+                try:
+                    type = neighbor.type
+                except:
+                    type = None
+
+            # TODO: why is this piece of code interfering with the social distancing???
+
+            if type != None:
+                if type == 'I' and helperfunctions.dist(agent.pos, neighbor.pos) < radius:
+                    neighbors.append(neighbor)
+            elif helperfunctions.dist(agent.pos, neighbor.pos) < radius:
+                neighbors.append(neighbor)
 
         return neighbors
 
