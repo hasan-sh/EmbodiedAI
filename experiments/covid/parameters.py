@@ -13,7 +13,7 @@ FRAMES = -1
 # choose swarm type
 SWARM = 'Covid'
 # define the number of agents
-N_AGENTS = 40
+N_AGENTS = 80
 
 CONVEX = True
 

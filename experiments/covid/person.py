@@ -2,7 +2,7 @@ import random
 import pygame
 import numpy as np
 from simulation.agent import Agent
-from simulation import helperfunctions
+from simulation import helperfunctions, swarm
 from experiments.covid import parameters as p
 
 
@@ -29,6 +29,8 @@ class Person(Agent):
         self.state = p.INFECTIOUS if infected else p.SUSCEPTIBLE
         self.color = p.ORANGE if self.state == p.SUSCEPTIBLE else p.RED
 
+
+
     def update_actions(self):
         # print(self.state)
         # avoid any obstacles in the environment
@@ -36,8 +38,11 @@ class Person(Agent):
             collide = pygame.sprite.collide_mask(self, obstacle)
             if bool(collide):
                 self.avoid_obstacle()
-
-        if self.state == p.INFECTIOUS:
+        
+        if self.state == p.SUSCEPTIBLE:
+            self.population.datapoints.append('S')
+        elif self.state == p.INFECTIOUS:
+            self.population.datapoints.append('I')
             self.count += 1
             all_neighbors = self.population.find_actual_neighbors(self, radius=50)
             all_susceptible = []
@@ -53,6 +58,9 @@ class Person(Agent):
             if self.count >= 1500:
                 self.state = p.RECOVERED
                 self.color = p.GREEN
+        elif self.state == p.RECOVERED:
+            self.population.datapoints.append('R')
+            return
         self.update_color()
 
 
