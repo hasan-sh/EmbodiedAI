@@ -59,11 +59,10 @@ RADIUS_VIEW = 70
 INFECTIOUS_RADIUS = 25
 
 # object
-FULL_LOCKDOWN = False
+FULL_LOCKDOWN = True
 PLACE_OBJECT = True
 SOCIAL_DISTANCING = True
 AGGREGATION = False
-OBJECT_LOC = [S_WIDTH / 2., S_HEIGHT / 2.5]
 
 # a better set of parameters should be researched; for aggregation (or both)
 if SOCIAL_DISTANCING:
