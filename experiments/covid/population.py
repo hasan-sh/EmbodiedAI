@@ -11,16 +11,15 @@ object_locs_full_lockdown = \
     [p.S_WIDTH - (p.S_WIDTH / 4.), p.S_HEIGHT - (p.S_HEIGHT / 4)],
     [p.S_WIDTH / 4., p.S_HEIGHT - (p.S_HEIGHT / 4)],
     ]
-object_scale_full_lockdown = [300, 300]
+object_scale_full_lockdown = [400, 400]
 object_scale_full_lockdown_center = [200, 200]
 
 class Population(Swarm):
     def __init__(self, screen_size):
         super(Population, self).__init__(screen_size)
-        if p.FULL_LOCKDOWN:
-            self.inside = [{'obstacle': (object_locs_full_lockdown[i], object_scale_full_lockdown), 'agents': 0} for i in range(0, len(object_locs_full_lockdown))]
-            # center currently can only be one obstacle.
-            self.in_center = {'obstacle': ([p.S_WIDTH / 2., p.S_HEIGHT / 2], [200, 200]), 'agents': 0}
+        self.inside = [{'obstacle': (object_locs_full_lockdown[i], object_scale_full_lockdown), 'agents': 0} for i in range(0, len(object_locs_full_lockdown))]
+        # center currently can only be one obstacle.
+        self.center = {'obstacle': ([p.S_WIDTH / 2., p.S_HEIGHT / 2], [200, 200]), 'agents': 0}
 
     def initialize(self, num_agents, swarm):
         if p.PLACE_OBJECT:
@@ -30,10 +29,11 @@ class Population(Swarm):
                                         pos=object_loc,
                                         scale=object_scale_full_lockdown,
                                         type='obstacle')
-                self.objects.add_object(file='experiments/covid/images/community_border.png',
-                                    pos=self.in_center.get('obstacle')[0],
-                                    scale=self.in_center.get('obstacle')[1],
-                                    type='obstacle')
+                if p.WITH_CENTER:
+                    self.objects.add_object(file='experiments/covid/images/community_border.png',
+                                        pos=self.center.get('obstacle')[0],
+                                        scale=self.center.get('obstacle')[1],
+                                        type='obstacle')
             else:
                 object_loc = [p.S_WIDTH / 2., p.S_HEIGHT / 2.5]
                 scale = [900, 900]
@@ -68,7 +68,7 @@ class Population(Swarm):
                             pass  # not sure what to do here
 
             self.add_agent(Person(pos=np.array(coordinates), velocity=None, population=swarm,
-                                  infected=True if agent <= 3 else False))
+                                  infected=True if agent <= p.MAX_INFECTED else False))
 
     def find_neighbor_separation(self, person, neighbors):  # show what works better
         separate = np.zeros(2)
@@ -99,6 +99,30 @@ class Population(Swarm):
         # max n of agents inside an obstacle
         el['agents'] += 1
         return x_pos, y_pos
+    
+    def enter_center(self, agent):
+        self.center['agents'] += 1
+        obstacle, scale = self.center.get('obstacle')
+        x_pos = float(random.randrange(obstacle[0] - int(scale[0]/3),
+                                    obstacle[0] + int(scale[0]/3)
+                                    ))
+        y_pos = float(random.randrange(obstacle[1] - int(scale[1]/3),
+                                    obstacle[1] + int(scale[1]/3)
+                                    ))
+        agent.pos = np.array([x_pos, y_pos])
+
+    def leave_center(self, agent):
+        self.center['agents'] -= 1
+        community = self.inside[random.randint(0, len(self.inside)-1)]
+        obstacle, scale = community.get('obstacle')
+        x_pos = float(random.randrange(obstacle[0] - int(scale[0]/3),
+                                    obstacle[0] + int(scale[0]/3)
+                                    ))
+        y_pos = float(random.randrange(obstacle[1] - int(scale[1]/3),
+                                    obstacle[1] + int(scale[1]/3)
+                                    ))
+        agent.pos = np.array([x_pos, y_pos])
+
 
     def find_neighbor_velocity(self, neighbors):
         neighbor_sum_v = np.zeros(2)
