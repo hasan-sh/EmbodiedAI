@@ -44,7 +44,7 @@ class Person(Agent):
         elif self.state == p.INFECTIOUS:
             self.population.datapoints.append('I')
             self.count += 1
-            all_neighbors = self.population.find_actual_neighbors(self, radius=50)
+            all_neighbors = self.population.find_actual_neighbors(self, radius=p.INFECTIOUS_RADIUS)
             all_susceptible = []
             for agent in all_neighbors:
                 if agent.state is p.SUSCEPTIBLE:

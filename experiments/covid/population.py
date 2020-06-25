@@ -12,9 +12,9 @@ class Population(Swarm):
     def initialize(self, num_agents, swarm):
 
         if p.PLACE_OBJECT:
-            object_loc = p.OBJECT_LOC
-            scale = [600, 600]
-            filename = 'experiments/covid/images/border.png' if p.FULL_LOCKDOWN else 'experiments/covid/images/border_open.png'
+            object_loc = [p.S_WIDTH / 2., p.S_HEIGHT / 2.] if p.FULL_LOCKDOWN else p.OBJECT_LOC
+            scale = [1000, 1000] if p.FULL_LOCKDOWN else [900, 900]
+            filename = 'experiments/covid/images/full_lockdown.png' if p.FULL_LOCKDOWN else 'experiments/covid/images/partial_lockdown.png'
 
             self.objects.add_object(file=filename,
                                     pos=object_loc,
