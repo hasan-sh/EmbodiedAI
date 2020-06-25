@@ -26,8 +26,8 @@ dT = 0.2
 # agents mass
 MASS = 20
 # agent maximum/minimum speed
-MAX_SPEED = 4.
-MIN_SPEED = 1.
+MAX_SPEED = 14.
+MIN_SPEED = 11.
 
 # Person Settings:
 # velocity force
@@ -47,21 +47,31 @@ Population class parameters (defines the environment of where the flock to act)
 i = 0.8
 r = 0.2
 
-
 SUSCEPTIBLE = 'susceptible'
 INFECTIOUS = 'infectious'
 RECOVERED = 'recovered'
 
 ORANGE = (255, 153, 18)
-RED = (248, 59, 59)
-GREEN = (0, 2, 187)
 RED = (238, 59, 59)
 GREEN = (0, 201, 87)
 
+RADIUS_VIEW = 70
+
 INFECTIOUS_RADIUS = 1
 
-#object
-FULL_LOCKDOWN = True
-PLACE_OBJECT = True
-OBJECT_LOC = [S_WIDTH/2., S_HEIGHT/3.]
+# object
+FULL_LOCKDOWN = False
+PLACE_OBJECT = False
+SOCIAL_DISTANCING = True
+AGGREGATION = False
+OBJECT_LOC = [S_WIDTH / 2., S_HEIGHT / 3.]
 
+# a better set of parameters should be researched; for aggregation (or both)
+if SOCIAL_DISTANCING:
+    COHESION_WEIGHT = 2.
+    ALIGNMENT_WEIGHT = 5.
+    SEPARATION_WEIGHT = 25.
+elif AGGREGATION:
+    COHESION_WEIGHT = 4.8
+    ALIGNMENT_WEIGHT = 5
+    SEPARATION_WEIGHT = 7
