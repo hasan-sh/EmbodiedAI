@@ -27,6 +27,9 @@ class Person(Agent):
         self.p_infection = self.calc_prob_infection()  # find prob of infection
         self.count = 0
         self.state = p.INFECTIOUS if infected else p.SUSCEPTIBLE
+        self.in_center = False
+        self.in_center_count = 0
+        self.in_center_prob = random.random()
         self.color = p.ORANGE if self.state == p.SUSCEPTIBLE else p.RED
 
 
@@ -55,7 +58,7 @@ class Person(Agent):
                     if infected_chance >= .5:
                         susceptible.state = p.INFECTIOUS
                         susceptible.color = p.RED
-            if self.count >= 100:
+            if self.count >= 500:
                 self.state = p.RECOVERED
                 self.color = p.GREEN
         elif self.state == p.RECOVERED:
@@ -69,6 +72,22 @@ class Person(Agent):
             steering_force = align_force * p.ALIGNMENT_WEIGHT + cohesion_force * p.COHESION_WEIGHT + separate_force * p.SEPARATION_WEIGHT
             # adjust the direction
             self.steering += helperfunctions.truncate(steering_force / self.mass, p.MAX_FORCE)
+
+
+        if p.WITH_CENTER:
+            if self.in_center:
+                self.in_center_count += 1
+                if self.in_center_count >= random.randint(100, 200):
+                    # go out
+                    self.population.leave_center(self)
+                    self.in_center = False
+                    self.in_center_count = 0
+            elif self.population.center.get('agents') < p.MAX_IN_CENTER and self.in_center_prob >= .6:
+                self.population.enter_center(self)
+                self.in_center = True
+            else:
+                self.in_center_prob = random.random()
+
 
     def update_color(self):
         self.image.fill(self.color)
