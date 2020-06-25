@@ -50,9 +50,10 @@ class Person(Agent):
                     all_susceptible.append(agent)
             if len(all_susceptible) > 0:
                 for susceptible in all_susceptible:
-                    print('affect')
-                    susceptible.state = p.INFECTIOUS
-                    susceptible.color = p.RED
+                    infected_chance = random.random()
+                    if infected_chance >= .5:
+                        susceptible.state = p.INFECTIOUS
+                        susceptible.color = p.RED
             if self.count >= 1500:
                 self.state = p.RECOVERED
                 self.color = p.GREEN
