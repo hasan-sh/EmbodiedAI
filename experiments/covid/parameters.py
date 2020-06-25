@@ -26,8 +26,8 @@ dT = 0.2
 # agents mass
 MASS = 20
 # agent maximum/minimum speed
-MAX_SPEED = 4.
-MIN_SPEED = 1.
+MAX_SPEED = 14.
+MIN_SPEED = 11.
 
 # Person Settings:
 # velocity force
@@ -70,10 +70,11 @@ SOCIAL_DISTANCING = True
 AGGREGATION = False
 OBJECT_LOC = [S_WIDTH / 2., S_HEIGHT / 3.]
 
+# a better set of parameters should be researched; for aggregation (or both)
 if SOCIAL_DISTANCING:
-    COHESION_WEIGHT = 1
-    ALIGNMENT_WEIGHT = 1
-    SEPARATION_WEIGHT = 7
+    COHESION_WEIGHT = 2.
+    ALIGNMENT_WEIGHT = 5.
+    SEPARATION_WEIGHT = 25.
 elif AGGREGATION:
     COHESION_WEIGHT = 4.8
     ALIGNMENT_WEIGHT = 5
