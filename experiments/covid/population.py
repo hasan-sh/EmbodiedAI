@@ -86,7 +86,7 @@ class Population(Swarm):
             return e.get('agents') < n_in_each
         elements = list(filter(func, self.inside))
         # to randomize agents across all obstacles.
-        random.shuffle(elements)
+        # random.shuffle(elements)
         el = elements[0]
 
         o_loc, o_scale = el.get('obstacle')
