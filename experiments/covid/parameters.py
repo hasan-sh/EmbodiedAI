@@ -26,8 +26,8 @@ dT = 0.2
 # agents mass
 MASS = 20
 # agent maximum/minimum speed
-MAX_SPEED = 14.
-MIN_SPEED = 11.
+MAX_SPEED = 4.
+MIN_SPEED = 1.
 
 # Person Settings:
 # velocity force

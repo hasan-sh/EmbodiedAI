@@ -86,16 +86,12 @@ class Population(Swarm):
 
     def coor_inside_object(self):
         n_in_each = int(p.N_AGENTS / len(object_locs_full_lockdown))
-        print(n_in_each)
-        def func(e):
-            return e.get('agents') < n_in_each
-        elements = list(filter(func, self.inside))
+        # to randomize agents across all obstacles.
+        # random.shuffle(self.inside)
         el = random.choice(self.inside)
         while el.get('agents') > n_in_each:
             el = random.choice(self.inside)
-        # to randomize agents across all obstacles.
-        # random.shuffle(elements)
-        # el = elements[0]
+
 
         o_loc, o_scale = el.get('obstacle')
         x_pos = float(random.randrange(o_loc[0] - int(o_scale[0]/3),
@@ -108,6 +104,9 @@ class Population(Swarm):
         el['agents'] += 1
         return x_pos, y_pos
     
+    def can_enter_center(self):
+        return self.center.get('agents') <= p.MAX_IN_CENTER 
+
     def enter_center(self, agent):
         self.center['agents'] += 1
         obstacle, scale = self.center.get('obstacle')
@@ -121,15 +120,7 @@ class Population(Swarm):
 
     def leave_center(self, agent):
         self.center['agents'] -= 1
-        community = self.inside[random.randint(0, len(self.inside)-1)]
-        obstacle, scale = community.get('obstacle')
-        x_pos = float(random.randrange(obstacle[0] - int(scale[0]/3),
-                                    obstacle[0] + int(scale[0]/3)
-                                    ))
-        y_pos = float(random.randrange(obstacle[1] - int(scale[1]/3),
-                                    obstacle[1] + int(scale[1]/3)
-                                    ))
-        agent.pos = np.array([x_pos, y_pos])
+        agent.pos = agent._original_pos
 
 
     def find_neighbor_velocity(self, neighbors):

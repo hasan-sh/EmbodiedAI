@@ -31,6 +31,7 @@ class Person(Agent):
         self.in_center_count = 0
         self.in_center_prob = random.random()
         self.color = p.ORANGE if self.state == p.SUSCEPTIBLE else p.RED
+        self._original_pos = np.copy(pos)
 
 
 
@@ -82,7 +83,7 @@ class Person(Agent):
                     self.population.leave_center(self)
                     self.in_center = False
                     self.in_center_count = 0
-            elif self.population.center.get('agents') < p.MAX_IN_CENTER and self.in_center_prob >= .6:
+            elif self.population.can_enter_center() and self.in_center_prob >= .6:
                 self.population.enter_center(self)
                 self.in_center = True
             else:
