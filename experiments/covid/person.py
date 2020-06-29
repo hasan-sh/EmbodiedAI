@@ -69,12 +69,12 @@ class Person(Agent):
         if p.SOCIAL_DISTANCING:  # adapts direction of the agents to
             align_force, cohesion_force, separate_force = self.neighbor_forces()
             # combine the vectors in one
-            steering_force = align_force * p.ALIGNMENT_WEIGHT + cohesion_force * p.COHESION_WEIGHT + separate_force * p.SEPARATION_WEIGHT
+            steering_force = separate_force * p.SEPARATION_WEIGHT
             # adjust the direction
             self.steering += helperfunctions.truncate(steering_force / self.mass, p.MAX_FORCE)
 
 
-        if p.WITH_CENTER:
+        if p.FULL_LOCKDOWN:
             if self.in_center:
                 self.in_center_count += 1
                 if self.in_center_count >= random.randint(100, 200):
