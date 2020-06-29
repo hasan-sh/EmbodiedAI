@@ -68,7 +68,7 @@ class Person(Agent):
 
 
         if p.SOCIAL_DISTANCING:  # adapts direction of the agents to
-            align_force, cohesion_force, separate_force = self.neighbor_forces()
+            separate_force = self.neighbor_forces()
             # combine the vectors in one
             steering_force = separate_force * p.SEPARATION_WEIGHT
             # adjust the direction
@@ -100,30 +100,12 @@ class Person(Agent):
 
     def neighbor_forces(self):
 
-        align_force, cohesion_force, separate_force = np.zeros(2), np.zeros(2), np.zeros(2)
-
+        separate_force = np.zeros(2)
         # find all the neighbors based on its radius view
         neighbors = self.population.find_neighbors(self, p.RADIUS_VIEW)
 
         # if there are neighbors, estimate the influence of their forces
         if neighbors:
-            align_force = self.align(self.population.find_neighbor_velocity(neighbors))
-            cohesion_force = self.cohesion(self.population.find_neighbor_center(neighbors))
             separate_force = self.population.find_neighbor_separation(self, neighbors)
 
-        return align_force, cohesion_force, separate_force
-
-    def align(self, neighbor_force):
-        """
-        Function to align the agent in accordance to neighbor velocity
-        :param neighbor_force: np.array(x,y)
-        """
-        return helperfunctions.normalize(neighbor_force - self.v)
-
-    def cohesion(self, neighbor_center):
-        """
-        Function to move the agent towards the center of mass of its neighbors
-        :param neighbor_rotation: np.array(x,y)
-        """
-        force = neighbor_center - self.pos
-        return helperfunctions.normalize(force - self.v)
+        return separate_force
